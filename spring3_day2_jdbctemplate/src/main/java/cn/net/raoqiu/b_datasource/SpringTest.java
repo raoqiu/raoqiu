@@ -1,4 +1,4 @@
-package cn.net.raoqiu.datasource;
+package cn.net.raoqiu.b_datasource;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

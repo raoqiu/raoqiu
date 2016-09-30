@@ -28,15 +28,30 @@
 	</bean>
 	
 	<!-- 3、c3p0连接池 -->
+	<!-- 外部属性文件 -->
+	<context:property-placeholder location="classpath:db.properties"/>
+	<!-- 通过${} 引入properties文件 中变量-->
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-		<property name="jdbcUrl" value="jdbc:mysql://115.28.91.5/spring3_day2"></property>
-		<property name="driverClass" value="com.mysql.jdbc.Driver"></property>
-		<property name="user" value="root"></property>
-		<property name="password" value="root"></property>
+		<property name="jdbcUrl" value="${jdbc.url}"></property>
+		<property name="driverClass" value="${jdbc.driver}"></property>
+		<property name="user" value="${jdbc.user}"></property>
+		<property name="password" value="${jdbc.password}"></property>
 	</bean>
+	
+	<!-- 4、JNDI连接池 --><!-- 为什么注解呢？这个需要tomcat环境，不然就会报错的 -->
+<!-- 	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean"> -->
+		<!-- java:/comp/env是固定的，jdbc/raoqiuDB是配置对象名称 -->
+<!-- 		<property name="jndiName" value="java:/comp/env/jdbc/raoqiuDB"></property> -->
+<!-- 	</bean> -->
 	
 	<!-- JdbcTemplate -->
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	<!-- DAO -->
+	<bean id="bookDAO" class="cn.net.raoqiu.c_dao.BookDAO">
+		<!-- 只需要注入DateSource 自动构造JdbcTemplate对象 -->
+		<property name="dataSource" ref="dataSource"/>
 	</bean>
 </beans>
